@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset=utf-8 />
+  <title>Route 66</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000000;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
+      color: #ffffff;
+    }
+
+    section {
+      width: 80%;
+      margin: 10px auto;
+    }
+
+    h1 {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 300;
+      font-size: 2.5em;
+      /* The em unit. 2.5x the current size */
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+      color: #ffffff;
+      font-size: 1.25em;
+      letter-spacing: .04em;
+    }
+
+    p {
+      font-size: 1em;
+      line-height: 1.5em;
+    }
+
+    a {
+      color: #ffd501;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
+      margin: 10px 0
+    }
+
+    #map {
+      width: 100%;
+      margin: 0px auto;
+
+    }
+
+    .max-image-width {
+      width: 100%;
+    }
+
+
+    .linkbox {
+      margin: 3px 0 20px 0;
+      display: block;
+      font-weight: 300;
+    }
+
+    hr {
+      border: 0px;
+      border-bottom: 1px solid #3d3d3d;
+      padding-top: 20px;
+    }
+
+    /* Use float property to make two-column layout. */
+
+    .first-column {
+      float: left;
+      width: 48%;
+      padding-right: 20px;
+    }
+
+    .column {
+      float: left;
+      width: 48%;
+    }
+
+    /* Clear floats after the columns */
+
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    /* When browser is 800px wide or less */
+
+    @media screen and (max-width: 800px) {
+
+      .first-column,
+      .column {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Add map to top of page and make it stretch to fill browser window. -->
+  <img class="max-image-width" src=graphics/route_66.png> <section>
+  <a href="graphics/route_66_8000px.png" class="linkbox">Link to higher resolution</a>
+
+  <h1>The Main Street of America</h1>
+  <h2>Authored by: Shan Huan Wu</h2>
+
+  <div class="row">
+    <p>From 11/11/1926 to its decommission on 06/26/1985, Route 66 served as the main road for many migrating west.
+      Stretching from Chicago, Illinois to Santa Monica, California, people today can still get their kicks on this Main
+      Street of
+      America.
+      Labeled are seven of the most relevant cities along its path.
+    </p>
+  </div>
+
+  <div class="row">
+    <div class="column">
+      <img class="max-image-width" src=graphics/symbol.jpg> <p>The symbol of Route 66.<br>
+      From busy city streets to abandoned country roads, this shield still marks the path for those who want to follow
+      it.
+      </p>
+    </div>
+    <div class="column">
+      <img class="max-image-width" src=graphics/midpoint.jpg> <p>One of the most famous landmarks along Route 66,
+      the Midpoint Cafe, about 47 miles west of Amarillo, TX.
+      Its location lies exactly in between the two ends, 1139 miles each way.
+      </p>
+    </div>
+  </div>
+
+  <h3>Sources</h3>
+  <ul>
+    <li>Data downloaded from <a href="https://hub.arcgis.com/datasets/adf920cfd4024cb8a90a99bef0d34443_0"
+        target="_blank">ArcGIS Hub</a> in September 2019,
+      with country and state maps courtesy of <a href="https://www.naturalearthdata.com/" target="_blank">Natural
+        Earth</a>.
+      City data taken from <a
+        href="https://nationalmap.gov/small_scale/atlasftp.html?openChapters=chpgeol%2Cchptrans%2Cchpbound%2Cchpref%2Cchpwater"
+        target="_blank">The National Map</a>.</li>
+    <li>Photographs taken by me.<br>
+      Left: Newberry Springs, CA 10/12/2019.<br>
+      Right: Adrian, TX 10/14/2019.
+  </ul>
+
+  <hr>
+  <ul>
+    <li>See my projects on GitHub: <a href="https://github.com/swu-uky">swu-uky</a></li>
+    <li>Follow me on Twitter: <a href="https://twitter.com/MeadowOfHay">@MeadowOfHay</a></li>
+    <li>Follow me on Instagram: <a href='https://instagram.com/meadowofhay'>@meadowofhay</a>.</li>
+  </ul>
+  </section>
+
+</body>
+
+</html>
