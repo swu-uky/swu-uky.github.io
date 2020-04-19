@@ -11,14 +11,6 @@
 	<link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,900i" rel="stylesheet">
 
 	<style>
-		/* 
-			UKy Colors: 
-            #c7c9c8 light gray 
-            #63666a dark gray
-            #15397f dark blue
-            #009bda light blue
-            #0033a0 official blue
-        */
 		body {
 			margin: 0;
 			padding: 0;
@@ -176,12 +168,9 @@
 
 			</div>
 			<div class="column">
-				<img class="max-image-width" src="https://www.iea.org/media/etp/tracking2017/Naturalgaspowerplant.jpg"
-					title="Natural Gas Power Plant">
-				<div class="linkbox">
-					Image of a natural gas power plant courtesy of the <a
-						href="https://www.iea.org/etp/tracking2017/naturalgas-firedpower/">International Energy
-						Agency</a>
+				<img class="max-image-width" src="graphics/glenarm.jpg" title="Glenarm Power Plant">
+				<div class="linkbox">Image of Glenarm Power Plant courtesy of
+					<a href="https://ww5.cityofpasadena.net/water-and-power/">Pasadena Water and Power</a>
 				</div>
 			</div>
 		</div>
@@ -252,15 +241,10 @@
 
 				layer.on('mouseout', function () {
 					layer.setStyle({
-						fillColor: layer.options.color // Nice!
+						fillColor: layer.options.color
 					});
 					layer.closePopup()
 				});
-				// var hydro = '';
-				// var naturalGas = '';
-				// var petro = '';
-				// var solar = '';
-				// var coal = '';
 
 				var fuelSources = [
 					["Hydro", "blue"],
@@ -271,58 +255,13 @@
 				]
 				var fuelsPopup = ""
 				for (fuel of fuelSources) {
-					if (feature.properties.fuel_source[fuel[0]])  {
+					if (feature.properties.fuel_source[fuel[0]]) {
 						layer.setStyle({
-						color: fuel[1],
-					});
+							color: fuel[1],
+						});
 						fuelsPopup += `<b>${fuel[0]}</b>: ${feature.properties.fuel_source[fuel[0]]} MW<br>`
 					}
 				}
-
-				// if (feature.properties.fuel_source.Hydro) {
-				// 	layer.setStyle({
-				// 		color: 'blue',
-				// 	});
-				// 	hydro =
-				// 		"<b>Hydro: </b>" +
-				// 		layer.feature.properties.fuel_source.Hydro
-				// }
-
-				// if (feature.properties.fuel_source["Natural Gas"]) {
-				// 	layer.setStyle({
-				// 		color: 'white',
-				// 	});
-				// 	naturalGas =
-				// 		"<b>Natural Gas: </b>" +
-				// 		layer.feature.properties.fuel_source["Natural Gas"]
-				// }
-
-				// if (feature.properties.fuel_source.Petroleum) {
-				// 	layer.setStyle({
-				// 		color: 'brown',
-				// 	});
-				// 	petro =
-				// 		"<b>Petroleum: </b>" +
-				// 		layer.feature.properties.fuel_source.Petroleum
-				// }
-
-				// if (feature.properties.fuel_source.Solar) {
-				// 	layer.setStyle({
-				// 		color: 'yellow',
-				// 	});
-				// 	solar =
-				// 		"<b>Solar: </b>" +
-				// 		layer.feature.properties.fuel_source.Solar
-				// }
-
-				// if (feature.properties.fuel_source.Coal) {
-				// 	layer.setStyle({
-				// 		color: 'grey',
-				// 	});
-				// 	coal =
-				// 		"<b>Coal: </b>" +
-				// 		layer.feature.properties.fuel_source.Coal
-				// }
 
 				var tooltip =
 					`<h2>${feature.properties.plant_name}</h2>${fuelsPopup}`;
