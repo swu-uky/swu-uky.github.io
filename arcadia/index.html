@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset=utf-8 />
+	<title>A Walk Through Arcadia, CA</title>
+	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+
+	<link href="https://fonts.googleapis.com/css?family=Quicksand:400,700" rel="stylesheet">
+
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: 'Quicksand', sans-serif;
+			font-size: 100%;
+			color: #3d3d3d;
+		}
+
+		h1 {
+			position: absolute;
+			margin-top: 0;
+			top: 10px;
+			left: 15px;
+			font-size: 1.5em;
+			font-family: 'Quicksand', sans-serif;
+			font-weight: 700;
+			letter-spacing: .04em;
+			padding: 10px 15px;
+			/* Add styles to match Leaflet UI elements */
+			background: rgba(256, 256, 256, .3);
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+			border: 1px solid #ddd;
+			border-radius: 5px;
+            /* Use z-index values to layer page elements. 
+            Higher number, higher layer. */
+            z-index: 20; 
+		}
+
+		h2 {
+			font-family: 'Quicksand', sans-serif;
+			font-size: 1.2em;
+			letter-spacing: .04em;
+
+		}
+
+		#map {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+            width: 100%;
+            z-index: 10;
+		}
+
+		/* Style button to show page layers. */
+		#info-button {
+            padding: 8px 5px;
+            font-size: 0.9em;
+            font-weight: bolder;
+            background: rgba(255, 175, 28, 0.8);
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+			border: 1px solid #ddd;
+			border-radius: 5px;
+            position: fixed;
+            bottom: 20px;
+            left: 15px;
+            /* Make sure this is always on top 
+            in case the modal fills screen. */
+            z-index: 9999; 
+            cursor: pointer;
+        }
+
+        /* 
+        What happens when the button is clicked? 
+        Compare this to the JS event 'pointerdown' shown below
+        */
+        #info-button:active{
+            border: 1px solid #ff0000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+        }
+
+		/* Make element center in frame and increase text size. */
+		#about {
+			display: none;
+            position: absolute;
+            font-size: 1.4em;
+            width: 80%;
+			top: 50%;
+  			left: 50%;
+  			transform: translate(-50%, -50%);
+			padding: 0 15px;
+			/* Add styles to match Leaflet UI elements */
+			background: rgba(256, 256, 256, .5);
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			z-index: 500;
+			overflow:scroll;
+		}
+
+		/* This will tint out all elements below it in z order. */
+		#background {
+			display: none;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+			background: rgba(256, 256, 256, .8);
+			z-index: 100;
+        }
+
+        /* Use the conventional GUI X to close modal. */
+        #x {
+            float:right;
+            font-size: 1.4em;
+            color:#3d3d3d;
+            cursor: pointer;
+        }
+
+        #x:hover {
+            color:#969696;
+        }
+
+        #x:active{
+            color: #ff0000;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
+		p {
+			font-size: .9em;
+			line-height: 1.5em;
+		}
+
+		a {
+			color: #005daa;
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		/* Leaflet popup styles */
+		.leaflet-popup-content {
+			font-family: 'Quicksand', sans-serif;
+			font-size: 1.1em;
+		}
+
+		/* 
+		When browser is 900px high or less
+		make the font a little smaller.
+		 */
+		@media screen and (max-height: 400px) {
+
+			#about p,
+			#about h2 {
+				font-size: .6em;
+			}
+
+			h1 {
+				font-size: 1.2em;
+			}
+
+			#about h2 {
+				font-size: 1em;
+			}
+
+			.leaflet-popup-content {
+				font-family: 'Quicksand', sans-serif;
+				font-size: 0.9em;
+			}
+		}
+
+		/* Don't display info block when window is very small */
+		@media screen and (max-height: 200px) {
+
+			#about {
+				display: none;
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1>A Walk Through Arcadia, CA</h1>
+	<div id="info-button">Information</div>
+
+	<div id='map'></div>
+	<div id='background'>
+		<div id="about">
+            <span id="x">&times;</span>
+			<h2>Info</h2>
+			<p>The path shown here is a common route I would take to and from school (specifically during the middle school years).
+				It takes a little less than an hour in its entirety and passes by significant landmarks such as the Westfield super mall (more than 1 million sq ft)
+				and the Santa Anita Race Track, host to some of the more prominent horse races every year!
+			</p>
+		<h2>About</h2>
+			<p>Data for this map can be found <a href="data/route.js">HERE</a>.</p>
+			<p>Map Authored By: Shan Huan Wu</p>
+			<p>See my projects on GitHub: <a href="https://github.com/swu-uky">swu-uky</a></p>
+			<p>Follow me on Instagram: <a href="https://instagram.com/meadowofhay">@meadowofhay</a></p>
+		</div>
+	</div>
+
+	
+
+	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+	<!-- Load a Leaflet plugin to provide geolocation. -->
+	<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+
+	<script src="data/route.js"></script>
+
+	<script>
+		var options = {
+			center: [38.038685, -84.504164],
+			zoom: 12,
+			zoomControl: false
+		}
+
+		var locate_options = {
+			position: 'topright',
+			strings: {
+				title: "Show me where I am, yo!"
+			}
+		}
+
+		var map = L.map('map', options);
+
+		// add zoom control to top right window position
+		L.control.zoom({
+			position: 'topright'
+		}).addTo(map);
+
+		// add geolocation control to top right window position (Leaflet can handle multiple top-right elements)
+		L.control.locate(locate_options).addTo(map);
+
+		// Get basemap URL from Leaflet Providers
+		var basemap_url = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+
+		// Get basemap attributes from Leaflet Providers
+		var basemap_attributes = {
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+			subdomains: 'abcd',
+			maxZoom: 19
+		};
+		// requests some map tiles
+		var tiles = L.tileLayer(basemap_url, basemap_attributes);
+
+		map.addLayer(tiles);
+
+		//var message = '<h2>University of Kentucky!</h2>Department of Geography';
+
+		//L.marker(map.getCenter())
+			//.bindPopup(message)
+			//.addTo(map)
+
+		var myRoute = L.geoJson(routeData, {
+
+		filter : function(feature) {
+		if(feature.geometry.type == "LineString") {
+		return feature;
+		}
+		},
+		style : function(feature) {
+
+		return {
+		color: "#005DAA",
+		weight: 4,
+		opacity: .6,
+		dashArray: "5, 5"
+		} 
+		}
+
+		}).addTo(map);
+
+		var myStops = L.geoJson(routeData, {
+
+		filter : function(feature) {
+		if(feature.geometry.type == "Point") {
+		return feature;
+		}
+		},
+		onEachFeature : function(feature, layer) {
+
+		layer.bindPopup(feature.properties.name); 
+		}
+
+		}).addTo(map);
+
+		map.fitBounds(myRoute.getBounds());
+
+		// recenters map and zooms in on a marker when clicked
+		// let's adapt the zoom amount to current level
+		// otherwise 12 -> 18 is crazy fast!
+		myStops.on("click", function(e) {
+			var zoom = map.getZoom()
+			map.setView(e.latlng, 17)
+		});
+
+		// recenters map to original bounds when clicking on the map
+		// written for use after zooming in on a marker
+		map.on("click", function(e) {
+			map.fitBounds(myRoute.getBounds());
+		});
+
+		// mousing over the path changes color
+		myRoute.on("mouseover", function(e) {
+			this.setStyle({
+				color: "green",
+				weight: 8,
+				opacity: .3,
+				dashArray: "10, 10"
+			});
+		});
+
+		// mousing out reverts changes
+		myRoute.on("mouseout", function(e) {
+			this.setStyle({
+				color: "#005DAA",
+				weight: 4,
+				opacity: .6,
+				dashArray: "5, 5"
+			});
+		});
+
+		/* --------------- Toggle on/off about content ---------------  */
+        // Set initial state of button
+        var clicked = false
+
+        // Access DOM elements
+		var button = document.getElementById("info-button");
+		var about = document.getElementById('about');
+		var background = document.getElementById('background');
+        var close = document.getElementById('x');
+
+        // Add multiple events to elements.
+        // Goal is to show interactivity for changing states.
+        // Compare this to the CSS for #info-button:active which happens when the link happens.
+
+        // When the pointing device presses down, e.g., a mouse, tablet pen, finger tip
+        button.addEventListener("pointerdown", function () {
+			button.style.background = 'rgba(255, 00, 20, 0.5)'
+		})
+
+        // Below is traditional mouseover events
+		button.addEventListener("mouseover", function () {
+			button.style.background = 'rgba(200, 200, 222, 0.8)'
+		})
+		button.addEventListener("mouseout", function () {
+            if (!clicked) {
+                button.style.background = 'rgba(255, 175, 28, 0.8)'
+            }
+			
+		})
+
+        // These use a function to swap states.
+		button.addEventListener("click", swapItUp)
+		background.addEventListener("click", swapItUp)
+        x.addEventListener("click", swapItUp)
+
+        // This prevents the click from propagating through element and activating other events
+		about.addEventListener('click', function(e) { 
+			e.stopPropagation(); 
+			});
+		
+        // Swap states. Lots can be done here!
+		function swapItUp () {
+            if (clicked) {
+                about.style.display = 'none';
+				background.style.display = 'none';
+                button.style.background = 'rgba(255, 175, 28, 0.8)'
+            } else {
+                about.style.height = '60vh';
+				about.style.display = 'inherit'
+				background.style.display = 'inherit'
+                button.style.background = 'rgba(200, 200, 222, 0.8)'
+            }
+			clicked = !clicked
+        }
+
+	</script>
+
+</body>
+
+</html>
