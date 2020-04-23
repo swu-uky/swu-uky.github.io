@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Portfolio</title>
+  <title>Portfolio: Shawn Wu</title>
 
   <!-- Bootstrap CSS -->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -104,7 +104,7 @@
         </div>
         <div class="col-lg-4 col-sm-6 portfolio-item">
           <div class="card h-100">
-            <a target="_blank" href="images/route_66.png"><img class="card-img-top" src="images/route_66.png"
+            <a target="#" data-toggle="modal" data-target="#route66"><img class="card-img-top" src="images/route_66.png"
                 alt="Route 66"></a>
             <div class="card-body">
               <h4 class="card-title">
@@ -114,6 +114,24 @@
                 The historic Route 66 covers 2,448 miles across the country from Chicago, IL to Santa Monica, CA.<br>
                 *Includes images from my own trip!<br>
                 10/12-10/22/2019</p>
+            </div>
+          </div>
+        </div>
+        <!-- Modal: route 66 -->
+        <div id="route66" class="modal fade " role="dialog">
+          <div class="modal-dialog modal-xl">
+            <!-- Modal content-->
+            <div class="modal-content bg-secondary">
+              <div class="modal-body text-dark">
+                <img src="images/route_66.png" width="100%" class="rounded">
+                <h3 class="mt-2">Route 66</h3>
+                <h4 class="card-title">
+                  <a target = "_blank" href="images/route_66.png">Download</a>
+                </h4>
+              </div>
+              <div class="modal-footer border-secondary border-0 bg-secondary">
+                <button type="button" class="btn btn-default text-dark bg-light " data-dismiss="modal">Close</button>
+              </div>
             </div>
           </div>
         </div>
